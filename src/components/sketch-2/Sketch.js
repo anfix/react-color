@@ -97,9 +97,6 @@ class Sketch extends ReactCSS.Component {
             <div is="hue">
               <Hue is="Hue" {...this.props} onChange={ this.handleChange } />
             </div>
-            <div is="alpha">
-              <Alpha is="Alpha" {...this.props} onChange={ this.handleChange } />
-            </div>
           </div>
           <div is="color">
             <div is="activeColor"/>
