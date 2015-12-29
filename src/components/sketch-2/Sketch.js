@@ -103,14 +103,7 @@ class Sketch extends ReactCSS.Component {
           </div>
           <div is="color">
             <div is="activeColor"/>
-            <Checkboard />
           </div>
-        </div>
-        <div is="fields">
-          <SketchFields {...this.props} onChange={ this.handleChange } />
-        </div>
-        <div is="presets">
-          <SketchPresetColors colors={ this.props.presetColors } onClick={ this.handleChange } />
         </div>
       </div>
     );
