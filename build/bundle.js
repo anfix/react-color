@@ -35610,11 +35610,6 @@
 	              'div',
 	              { style: this.styles().hue },
 	              React.createElement(Hue, _extends({}, this.styles().Hue, this.props, { onChange: this.handleChange }))
-	            ),
-	            React.createElement(
-	              'div',
-	              { style: this.styles().alpha },
-	              React.createElement(Alpha, _extends({}, this.styles().Alpha, this.props, { onChange: this.handleChange }))
 	            )
 	          ),
 	          React.createElement(
