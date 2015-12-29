@@ -12,9 +12,6 @@
   "bugs": {
     "url": "https://github.com/casesandberg/react-color/issues"
   },
-  "scripts": {
-    "build": "make build"
-  },
   "homepage": "http://casesandberg.github.io/react-color/",
   "keywords": [
     "react",
