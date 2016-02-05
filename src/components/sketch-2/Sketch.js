@@ -42,10 +42,11 @@ class Sketch extends ReactCSS.Component {
         sliders: {
           padding: '4px 0',
           flex: '1',
+          marginBottom: '4px',
         },
         color: {
           width: '24px',
-          height: '12px',
+          height: '14px',
           position: 'relative',
           marginTop: '4px',
           marginLeft: '4px',
@@ -60,7 +61,7 @@ class Sketch extends ReactCSS.Component {
         },
         hue: {
           position: 'relative',
-          height: '10px',
+          height: '14px',
           overflow: 'hidden',
         },
         Hue: {

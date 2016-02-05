@@ -34508,7 +34508,7 @@
 	          slider: {
 	            width: '4px',
 	            borderRadius: '1px',
-	            height: '8px',
+	            height: '12px',
 	            boxShadow: '0 0 2px rgba(0, 0, 0, .6)',
 	            background: '#fff',
 	            marginTop: '1px',
@@ -35544,11 +35544,12 @@
 	          },
 	          sliders: {
 	            padding: '4px 0',
-	            flex: '1'
+	            flex: '1',
+	            marginBottom: '4px'
 	          },
 	          color: {
 	            width: '24px',
-	            height: '24px',
+	            height: '14px',
 	            position: 'relative',
 	            marginTop: '4px',
 	            marginLeft: '4px',
@@ -35563,7 +35564,7 @@
 	          },
 	          hue: {
 	            position: 'relative',
-	            height: '10px',
+	            height: '14px',
 	            overflow: 'hidden'
 	          },
 	          Hue: {
