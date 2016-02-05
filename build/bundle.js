@@ -34903,7 +34903,7 @@
 	            marginTop: '1px',
 	            width: '4px',
 	            borderRadius: '1px',
-	            height: '8px',
+	            height: '12px',
 	            boxShadow: '0 0 2px rgba(0, 0, 0, .6)',
 	            background: '#fff',
 	            transform: 'translateX(-2px)'
