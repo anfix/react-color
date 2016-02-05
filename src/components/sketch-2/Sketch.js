@@ -45,7 +45,7 @@ class Sketch extends ReactCSS.Component {
         },
         color: {
           width: '24px',
-          height: '24px',
+          height: '12px',
           position: 'relative',
           marginTop: '4px',
           marginLeft: '4px',
