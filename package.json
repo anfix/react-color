@@ -25,12 +25,18 @@
     "material design",
     "popup"
   ],
+  "peerDependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  },
   "dependencies": {
     "lodash": "^3.10.1",
     "material-colors": "^1.0.0",
     "merge": "^1.2.0",
-    "react": "^0.13.3",
-    "reactcss": "^0.3.2",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "prop-types": "^15.0.0",
+    "reactcss": "^1.2.2",
     "tinycolor2": "^1.1.2"
   },
   "devDependencies": {

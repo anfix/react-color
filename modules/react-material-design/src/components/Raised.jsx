@@ -2,6 +2,7 @@
 "use strict";
 
 var React = require('react');
+var PropTypes = require('prop-types');
 var ReactCSS = require('reactcss');
 
 class Raised extends ReactCSS.Component {
@@ -77,11 +78,11 @@ class Raised extends ReactCSS.Component {
 }
 
 Raised.propTypes = {
-  background: React.PropTypes.string,
-  zDepth: React.PropTypes.oneOf(['0', '1', '2', '3', '4', '5', 0, 1, 2, 3, 4, 5]),
-  radius: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.number,
+  background: PropTypes.string,
+  zDepth: PropTypes.oneOf(['0', '1', '2', '3', '4', '5', 0, 1, 2, 3, 4, 5]),
+  radius: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
   ]),
 };
 

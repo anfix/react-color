@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react');
+var PropTypes = require('prop-types');
 var ReactCSS = require('reactcss');
 
 class Tab extends ReactCSS.Component {
@@ -54,7 +55,7 @@ class Tab extends ReactCSS.Component {
 }
 
 Tab.propTypes = {
-  selected: React.PropTypes.bool,
+  selected: PropTypes.bool,
 };
 
 Tab.defaultProps = {
