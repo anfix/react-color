@@ -36,7 +36,7 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "prop-types": "^15.0.0",
-    "reactcss": "^1.2.2",
+    "reactcss": "git://github.com/gonzalo-rivas/reactcss.git#react16b",
     "tinycolor2": "^1.1.2"
   },
   "devDependencies": {
