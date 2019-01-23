@@ -223,7 +223,7 @@
 	var ReactCSS = __webpack_require__(6);
 
 	var HomeFeature = __webpack_require__(19);
-	var HomeDocumentation = __webpack_require__(56);
+	var HomeDocumentation = __webpack_require__(64);
 
 	module.exports = (function (_ReactCSS$Component) {
 	  _inherits(Home, _ReactCSS$Component);
@@ -13010,16 +13010,16 @@
 	var ReactCSS = __webpack_require__(6);
 	var ColorPicker = __webpack_require__(20);
 
-	var _require = __webpack_require__(45);
+	var _require = __webpack_require__(59);
 
 	var Container = _require.Container;
 	var Grid = _require.Grid;
 
-	var _require2 = __webpack_require__(48);
+	var _require2 = __webpack_require__(43);
 
 	var Raised = _require2.Raised;
 
-	var Move = __webpack_require__(54);
+	var Move = __webpack_require__(62);
 
 	var HomeFeature = (function (_ReactCSS$Component) {
 	  _inherits(HomeFeature, _ReactCSS$Component);
@@ -13348,10 +13348,10 @@
 	var Photoshop = __webpack_require__(24);
 	var Sketch = __webpack_require__(34);
 	var Chrome = __webpack_require__(37);
-	var Swatches = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./swatches/Swatches\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-	var Slider = __webpack_require__(41);
-	var Material = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./material/Material\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-	var Compact = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./compact/Compact\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var Swatches = __webpack_require__(41);
+	var Slider = __webpack_require__(51);
+	var Material = __webpack_require__(55);
+	var Compact = __webpack_require__(56);
 
 	var ColorPicker = (function (_ReactCSS$Component) {
 	  _inherits(ColorPicker, _ReactCSS$Component);
@@ -17019,8 +17019,6 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
@@ -17031,13 +17029,14 @@
 
 	var React = __webpack_require__(2);
 	var ReactCSS = __webpack_require__(6);
+	var color = __webpack_require__(22);
+	var material = __webpack_require__(42);
 
-	var _require = __webpack_require__(25);
+	var _require = __webpack_require__(43);
 
-	var Hue = _require.Hue;
+	var Raised = _require.Raised;
 
-	var SliderSwatches = __webpack_require__(42);
-	var SliderPointer = __webpack_require__(44);
+	var SwatchesGroup = __webpack_require__(49);
 
 	var Swatches = (function (_ReactCSS$Component) {
 	  _inherits(Swatches, _ReactCSS$Component);
@@ -17055,13 +17054,20 @@
 	    value: function classes() {
 	      return {
 	        'default': {
-	          slider: {},
-	          hue: {
-	            height: '12px',
-	            position: 'relative'
+	          picker: {
+	            width: '320px',
+	            height: '240px'
 	          },
-	          Hue: {
-	            radius: '2px'
+	          overflow: {
+	            height: '240px',
+	            overflowY: 'scroll'
+	          },
+	          body: {
+	            padding: '16px 0 6px 16px'
+	          },
+
+	          clear: {
+	            clear: 'both'
 	          }
 	        }
 	      };
@@ -17069,23 +17075,35 @@
 	  }, {
 	    key: 'handleChange',
 	    value: function handleChange(data) {
-	      this.props.onChange(data);
+	      color.isValidHex(data) && this.props.onChange(data);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var groups = [];
+	      if (this.props.colors) {
+	        for (var i = 0; i < this.props.colors.length; i++) {
+	          var group = this.props.colors[i];
+	          groups.push(React.createElement(SwatchesGroup, { key: group.toString(), group: group, active: this.props.hex, onClick: this.handleChange }));
+	        }
+	      }
+
 	      return React.createElement(
 	        'div',
-	        { style: this.styles().slider },
+	        { style: this.styles().picker },
 	        React.createElement(
-	          'div',
-	          { style: this.styles().hue },
-	          React.createElement(Hue, _extends({}, this.styles().Hue, this.props, { pointer: SliderPointer, onChange: this.handleChange }))
-	        ),
-	        React.createElement(
-	          'div',
-	          { style: this.styles().swatches },
-	          React.createElement(SliderSwatches, _extends({}, this.props, { onClick: this.handleChange }))
+	          Raised,
+	          null,
+	          React.createElement(
+	            'div',
+	            { style: this.styles().overflow },
+	            React.createElement(
+	              'div',
+	              { style: this.styles().body },
+	              groups,
+	              React.createElement('div', { style: this.styles().clear })
+	            )
+	          )
 	        )
 	      );
 	    }
@@ -17094,470 +17112,44 @@
 	  return Swatches;
 	})(ReactCSS.Component);
 
+	Swatches.defaultProps = {
+	  colors: [[material.red['900'], material.red['700'], material.red['500'], material.red['300'], material.red['100']], [material.pink['900'], material.pink['700'], material.pink['500'], material.pink['300'], material.pink['100']], [material.purple['900'], material.purple['700'], material.purple['500'], material.purple['300'], material.purple['100']], [material.deepPurple['900'], material.deepPurple['700'], material.deepPurple['500'], material.deepPurple['300'], material.deepPurple['100']], [material.indigo['900'], material.indigo['700'], material.indigo['500'], material.indigo['300'], material.indigo['100']], [material.blue['900'], material.blue['700'], material.blue['500'], material.blue['300'], material.blue['100']], [material.lightBlue['900'], material.lightBlue['700'], material.lightBlue['500'], material.lightBlue['300'], material.lightBlue['100']], [material.cyan['900'], material.cyan['700'], material.cyan['500'], material.cyan['300'], material.cyan['100']], [material.teal['900'], material.teal['700'], material.teal['500'], material.teal['300'], material.teal['100']], ['#194D33', material.green['700'], material.green['500'], material.green['300'], material.green['100']], [material.lightGreen['900'], material.lightGreen['700'], material.lightGreen['500'], material.lightGreen['300'], material.lightGreen['100']], [material.lime['900'], material.lime['700'], material.lime['500'], material.lime['300'], material.lime['100']], [material.yellow['900'], material.yellow['700'], material.yellow['500'], material.yellow['300'], material.yellow['100']], [material.amber['900'], material.amber['700'], material.amber['500'], material.amber['300'], material.amber['100']], [material.orange['900'], material.orange['700'], material.orange['500'], material.orange['300'], material.orange['100']], [material.deepOrange['900'], material.deepOrange['700'], material.deepOrange['500'], material.deepOrange['300'], material.deepOrange['100']], [material.brown['900'], material.brown['700'], material.brown['500'], material.brown['300'], material.brown['100']], [material.blueGrey['900'], material.blueGrey['700'], material.blueGrey['500'], material.blueGrey['300'], material.blueGrey['100']]]
+	};
+
 	module.exports = Swatches;
 
 /***/ }),
 /* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var React = __webpack_require__(2);
-	var ReactCSS = __webpack_require__(6);
-
-	var SliderSwatch = __webpack_require__(43);
-
-	var SliderSwatches = (function (_ReactCSS$Component) {
-	  _inherits(SliderSwatches, _ReactCSS$Component);
-
-	  function SliderSwatches() {
-	    _classCallCheck(this, SliderSwatches);
-
-	    _get(Object.getPrototypeOf(SliderSwatches.prototype), 'constructor', this).call(this);
-
-	    this.handleClick = this.handleClick.bind(this);
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports === 'object') {
+	    module.exports = factory();
+	  } else {
+	    root.materialColors = factory();
 	  }
+	})(this, function() {
+	  return {"red":{"50":"#ffebee","100":"#ffcdd2","200":"#ef9a9a","300":"#e57373","400":"#ef5350","500":"#f44336","600":"#e53935","700":"#d32f2f","800":"#c62828","900":"#b71c1c","a100":"#ff8a80","a200":"#ff5252","a400":"#ff1744","a700":"#d50000"},"pink":{"50":"#fce4ec","100":"#f8bbd0","200":"#f48fb1","300":"#f06292","400":"#ec407a","500":"#e91e63","600":"#d81b60","700":"#c2185b","800":"#ad1457","900":"#880e4f","a100":"#ff80ab","a200":"#ff4081","a400":"#f50057","a700":"#c51162"},"purple":{"50":"#f3e5f5","100":"#e1bee7","200":"#ce93d8","300":"#ba68c8","400":"#ab47bc","500":"#9c27b0","600":"#8e24aa","700":"#7b1fa2","800":"#6a1b9a","900":"#4a148c","a100":"#ea80fc","a200":"#e040fb","a400":"#d500f9","a700":"#aa00ff"},"deepPurple":{"50":"#ede7f6","100":"#d1c4e9","200":"#b39ddb","300":"#9575cd","400":"#7e57c2","500":"#673ab7","600":"#5e35b1","700":"#512da8","800":"#4527a0","900":"#311b92","a100":"#b388ff","a200":"#7c4dff","a400":"#651fff","a700":"#6200ea"},"indigo":{"50":"#e8eaf6","100":"#c5cae9","200":"#9fa8da","300":"#7986cb","400":"#5c6bc0","500":"#3f51b5","600":"#3949ab","700":"#303f9f","800":"#283593","900":"#1a237e","a100":"#8c9eff","a200":"#536dfe","a400":"#3d5afe","a700":"#304ffe"},"blue":{"50":"#e3f2fd","100":"#bbdefb","200":"#90caf9","300":"#64b5f6","400":"#42a5f5","500":"#2196f3","600":"#1e88e5","700":"#1976d2","800":"#1565c0","900":"#0d47a1","a100":"#82b1ff","a200":"#448aff","a400":"#2979ff","a700":"#2962ff"},"lightBlue":{"50":"#e1f5fe","100":"#b3e5fc","200":"#81d4fa","300":"#4fc3f7","400":"#29b6f6","500":"#03a9f4","600":"#039be5","700":"#0288d1","800":"#0277bd","900":"#01579b","a100":"#80d8ff","a200":"#40c4ff","a400":"#00b0ff","a700":"#0091ea"},"cyan":{"50":"#e0f7fa","100":"#b2ebf2","200":"#80deea","300":"#4dd0e1","400":"#26c6da","500":"#00bcd4","600":"#00acc1","700":"#0097a7","800":"#00838f","900":"#006064","a100":"#84ffff","a200":"#18ffff","a400":"#00e5ff","a700":"#00b8d4"},"teal":{"50":"#e0f2f1","100":"#b2dfdb","200":"#80cbc4","300":"#4db6ac","400":"#26a69a","500":"#009688","600":"#00897b","700":"#00796b","800":"#00695c","900":"#004d40","a100":"#a7ffeb","a200":"#64ffda","a400":"#1de9b6","a700":"#00bfa5"},"green":{"50":"#e8f5e9","100":"#c8e6c9","200":"#a5d6a7","300":"#81c784","400":"#66bb6a","500":"#4caf50","600":"#43a047","700":"#388e3c","800":"#2e7d32","900":"#1b5e20","a100":"#b9f6ca","a200":"#69f0ae","a400":"#00e676","a700":"#00c853"},"lightGreen":{"50":"#f1f8e9","100":"#dcedc8","200":"#c5e1a5","300":"#aed581","400":"#9ccc65","500":"#8bc34a","600":"#7cb342","700":"#689f38","800":"#558b2f","900":"#33691e","a100":"#ccff90","a200":"#b2ff59","a400":"#76ff03","a700":"#64dd17"},"lime":{"50":"#f9fbe7","100":"#f0f4c3","200":"#e6ee9c","300":"#dce775","400":"#d4e157","500":"#cddc39","600":"#c0ca33","700":"#afb42b","800":"#9e9d24","900":"#827717","a100":"#f4ff81","a200":"#eeff41","a400":"#c6ff00","a700":"#aeea00"},"yellow":{"50":"#fffde7","100":"#fff9c4","200":"#fff59d","300":"#fff176","400":"#ffee58","500":"#ffeb3b","600":"#fdd835","700":"#fbc02d","800":"#f9a825","900":"#f57f17","a100":"#ffff8d","a200":"#ffff00","a400":"#ffea00","a700":"#ffd600"},"amber":{"50":"#fff8e1","100":"#ffecb3","200":"#ffe082","300":"#ffd54f","400":"#ffca28","500":"#ffc107","600":"#ffb300","700":"#ffa000","800":"#ff8f00","900":"#ff6f00","a100":"#ffe57f","a200":"#ffd740","a400":"#ffc400","a700":"#ffab00"},"orange":{"50":"#fff3e0","100":"#ffe0b2","200":"#ffcc80","300":"#ffb74d","400":"#ffa726","500":"#ff9800","600":"#fb8c00","700":"#f57c00","800":"#ef6c00","900":"#e65100","a100":"#ffd180","a200":"#ffab40","a400":"#ff9100","a700":"#ff6d00"},"deepOrange":{"50":"#fbe9e7","100":"#ffccbc","200":"#ffab91","300":"#ff8a65","400":"#ff7043","500":"#ff5722","600":"#f4511e","700":"#e64a19","800":"#d84315","900":"#bf360c","a100":"#ff9e80","a200":"#ff6e40","a400":"#ff3d00","a700":"#dd2c00"},"brown":{"50":"#efebe9","100":"#d7ccc8","200":"#bcaaa4","300":"#a1887f","400":"#8d6e63","500":"#795548","600":"#6d4c41","700":"#5d4037","800":"#4e342e","900":"#3e2723"},"grey":{"50":"#fafafa","100":"#f5f5f5","200":"#eeeeee","300":"#e0e0e0","400":"#bdbdbd","500":"#9e9e9e","600":"#757575","700":"#616161","800":"#424242","900":"#212121"},"blueGrey":{"50":"#eceff1","100":"#cfd8dc","200":"#b0bec5","300":"#90a4ae","400":"#78909c","500":"#607d8b","600":"#546e7a","700":"#455a64","800":"#37474f","900":"#263238"},"darkText":{"primary":"rgba(0, 0, 0, 0.87)","secondary":"rgba(0, 0, 0, 0.54)","disabled":"rgba(0, 0, 0, 0.38)","dividers":"rgba(0, 0, 0, 0.12)"},"lightText":{"primary":"rgba(255, 255, 255, 1)","secondary":"rgba(255, 255, 255, 0.7)","disabled":"rgba(255, 255, 255, 0.5)","dividers":"rgba(255, 255, 255, 0.12)"},"darkIcons":{"active":"rgba(0, 0, 0, 0.54)","inactive":"rgba(0, 0, 0, 0.38)"},"lightIcons":{"active":"rgba(255, 255, 255, 1)","inactive":"rgba(255, 255, 255, 0.5)"},"white":"#ffffff","black":"#000000"};
+	});
 
-	  _createClass(SliderSwatches, [{
-	    key: 'classes',
-	    value: function classes() {
-	      return {
-	        'default': {
-	          swatches: {
-	            marginRight: '-4px',
-	            marginTop: '20px'
-	          },
-	          swatch: {
-	            width: '19.65%',
-	            marginRight: '1px',
-	            float: 'left'
-	          },
-	          clear: {
-	            clear: 'both'
-	          }
-	        }
-	      };
-	    }
-	  }, {
-	    key: 'handleClick',
-	    value: function handleClick(data) {
-	      this.props.onClick(data);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return React.createElement(
-	        'div',
-	        { style: this.styles().swatches },
-	        React.createElement(
-	          'div',
-	          { style: this.styles().swatch },
-	          React.createElement(SliderSwatch, _extends({}, this.props, { offset: '.80', active: Math.round(this.props.hsl.l * 100) / 100 == .80 && Math.round(this.props.hsl.s * 100) / 100 == .50, onClick: this.handleClick, first: true }))
-	        ),
-	        React.createElement(
-	          'div',
-	          { style: this.styles().swatch },
-	          React.createElement(SliderSwatch, _extends({}, this.props, { offset: '.65', active: Math.round(this.props.hsl.l * 100) / 100 == .65 && Math.round(this.props.hsl.s * 100) / 100 == .50, onClick: this.handleClick }))
-	        ),
-	        React.createElement(
-	          'div',
-	          { style: this.styles().swatch },
-	          React.createElement(SliderSwatch, _extends({}, this.props, { offset: '.50', active: Math.round(this.props.hsl.l * 100) / 100 == .50 && Math.round(this.props.hsl.s * 100) / 100 == .50, onClick: this.handleClick }))
-	        ),
-	        React.createElement(
-	          'div',
-	          { style: this.styles().swatch },
-	          React.createElement(SliderSwatch, _extends({}, this.props, { offset: '.35', active: Math.round(this.props.hsl.l * 100) / 100 == .35 && Math.round(this.props.hsl.s * 100) / 100 == .50, onClick: this.handleClick }))
-	        ),
-	        React.createElement(
-	          'div',
-	          { style: this.styles().swatch },
-	          React.createElement(SliderSwatch, _extends({}, this.props, { offset: '.20', active: Math.round(this.props.hsl.l * 100) / 100 == .20 && Math.round(this.props.hsl.s * 100) / 100 == .50, onClick: this.handleClick, last: true }))
-	        ),
-	        React.createElement('div', { style: this.styles().clear })
-	      );
-	    }
-	  }]);
-
-	  return SliderSwatches;
-	})(ReactCSS.Component);
-
-	module.exports = SliderSwatches;
 
 /***/ }),
 /* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	module.exports = {
+	  Raised: __webpack_require__(44),
+	  Tile: __webpack_require__(45),
 
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	  Tabs: __webpack_require__(46),
+	};
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var React = __webpack_require__(2);
-	var ReactCSS = __webpack_require__(6);
-
-	var SliderSwatch = (function (_ReactCSS$Component) {
-	  _inherits(SliderSwatch, _ReactCSS$Component);
-
-	  function SliderSwatch() {
-	    _classCallCheck(this, SliderSwatch);
-
-	    _get(Object.getPrototypeOf(SliderSwatch.prototype), 'constructor', this).call(this);
-
-	    this.handleClick = this.handleClick.bind(this);
-	  }
-
-	  _createClass(SliderSwatch, [{
-	    key: 'classes',
-	    value: function classes() {
-	      return {
-	        'default': {
-	          swatch: {
-	            height: '12px',
-	            background: 'hsl(' + this.props.hsl.h + ', 50%, ' + this.props.offset * 100 + '%)',
-	            cursor: 'pointer'
-	          }
-	        },
-	        'first': {
-	          swatch: {
-	            borderRadius: '2px 0 0 2px'
-	          }
-	        },
-	        'last': {
-	          swatch: {
-	            borderRadius: '0 2px 2px 0'
-	          }
-	        },
-	        active: {
-	          swatch: {
-	            transform: 'scaleY(1.8)',
-	            borderRadius: '3.6px/2px'
-	          }
-	        }
-	      };
-	    }
-	  }, {
-	    key: 'handleClick',
-	    value: function handleClick() {
-	      this.props.onClick({ h: this.props.hsl.h, s: .5, l: this.props.offset });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return React.createElement('div', { style: this.styles().swatch, onClick: this.handleClick });
-	    }
-	  }]);
-
-	  return SliderSwatch;
-	})(ReactCSS.Component);
-
-	module.exports = SliderSwatch;
 
 /***/ }),
 /* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var React = __webpack_require__(2);
-	var ReactCSS = __webpack_require__(6);
-
-	var SliderPointer = (function (_ReactCSS$Component) {
-	  _inherits(SliderPointer, _ReactCSS$Component);
-
-	  function SliderPointer() {
-	    _classCallCheck(this, SliderPointer);
-
-	    _get(Object.getPrototypeOf(SliderPointer.prototype), 'constructor', this).apply(this, arguments);
-	  }
-
-	  _createClass(SliderPointer, [{
-	    key: 'classes',
-	    value: function classes() {
-	      return {
-	        'default': {
-	          picker: {
-	            width: '14px',
-	            height: '14px',
-	            borderRadius: '6px',
-	            transform: 'translate(-7px, -1px)',
-	            backgroundColor: 'rgb(248, 248, 248)',
-	            boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.37)'
-	          }
-	        }
-	      };
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return React.createElement('div', { style: this.styles().picker });
-	    }
-	  }]);
-
-	  return SliderPointer;
-	})(ReactCSS.Component);
-
-	module.exports = SliderPointer;
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	
-	module.exports = {
-	  Container: __webpack_require__(46),
-	  Grid: __webpack_require__(47),
-	};
-
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var React = __webpack_require__(2);
-	var ReactCSS = __webpack_require__(6);
-
-	var Container = (function (_ReactCSS$Component) {
-	  _inherits(Container, _ReactCSS$Component);
-
-	  function Container() {
-	    _classCallCheck(this, Container);
-
-	    _get(Object.getPrototypeOf(Container.prototype), 'constructor', this).apply(this, arguments);
-	  }
-
-	  _createClass(Container, [{
-	    key: 'classes',
-	    value: function classes() {
-	      return {
-	        'default': {
-	          container: {
-	            maxWidth: this.props.width + 'px',
-	            padding: '0 20px',
-	            margin: '0 auto'
-	          }
-	        }
-	      };
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return React.createElement(
-	        'div',
-	        { style: this.styles().container },
-	        this.props.children
-	      );
-	    }
-	  }]);
-
-	  return Container;
-	})(ReactCSS.Component);
-
-	Container.defaultProps = {
-	  width: 960
-	};
-
-	module.exports = Container;
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var React = __webpack_require__(2);
-	var ReactCSS = __webpack_require__(6);
-
-	var Grid = (function (_ReactCSS$Component) {
-	  _inherits(Grid, _ReactCSS$Component);
-
-	  function Grid() {
-	    _classCallCheck(this, Grid);
-
-	    _get(Object.getPrototypeOf(Grid.prototype), 'constructor', this).apply(this, arguments);
-	  }
-
-	  _createClass(Grid, [{
-	    key: 'classes',
-	    value: function classes() {
-	      return {
-	        'default': {
-	          grid: {
-	            position: 'relative'
-	          }
-	        },
-	        'preset-default': {
-	          left: {
-	            position: 'absolute',
-	            width: '170px'
-	          },
-	          main: {
-	            paddingLeft: '190px'
-	          }
-	        },
-	        'preset-one': {
-	          left: {
-	            width: 'auto',
-	            position: 'relative',
-	            paddingRight: '260px'
-	          },
-	          main: {
-	            position: 'absolute',
-	            right: '0',
-	            top: '0',
-	            width: '225px'
-	          }
-	        },
-	        'preset-two': {
-	          left: {
-	            width: '220px',
-	            position: 'absolute'
-	          },
-	          main: {
-	            paddingLeft: '267px'
-	          }
-	        },
-	        'preset-three': {
-	          left: {
-	            width: '410px',
-	            position: 'absolute',
-	            height: '100%'
-	          },
-	          main: {
-	            paddingLeft: '455px'
-	          }
-	        },
-
-	        'mobile-default': {
-	          main: {
-	            padding: '0'
-	          },
-	          left: {
-	            display: 'none'
-	          }
-	        },
-	        'mobile-one': {
-	          left: {
-	            paddingRight: '0'
-	          },
-	          main: {
-	            display: 'none'
-	          }
-	        },
-	        'mobile-two': {
-	          grid: {
-	            position: 'relative',
-	            width: '100%'
-	          },
-	          left: {
-	            position: 'absolute',
-	            left: '50%',
-	            transform: 'translateX(-50%)',
-	            marginLeft: '-20px'
-	          },
-	          main: {
-	            display: 'none'
-	          }
-	        },
-	        'mobile-three': {
-	          grid: {
-	            display: 'none'
-	          }
-	        }
-	      };
-	    }
-	  }, {
-	    key: 'styles',
-	    value: function styles() {
-	      return this.css({
-	        'mobile-default': this.props.preset === 'default' && document.getElementById('root').clientWidth < 500,
-	        'mobile-one': this.props.preset === 'one' && document.getElementById('root').clientWidth < 500,
-	        'mobile-two': this.props.preset === 'two' && document.getElementById('root').clientWidth < 500,
-	        'mobile-three': this.props.preset === 'three' && document.getElementById('root').clientWidth < 500
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return React.createElement(
-	        'div',
-	        { style: this.styles().grid },
-	        React.createElement(
-	          'div',
-	          { style: this.styles().left },
-	          this.props.children[0]
-	        ),
-	        React.createElement(
-	          'div',
-	          { style: this.styles().main },
-	          this.props.children[1]
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Grid;
-	})(ReactCSS.Component);
-
-	Grid.defaultProps = {
-	  preset: 'default'
-	};
-
-	module.exports = Grid;
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	
-	module.exports = {
-	  Raised: __webpack_require__(49),
-	  Tile: __webpack_require__(50),
-
-	  Tabs: __webpack_require__(51),
-	};
-
-
-/***/ }),
-/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* jshint node: true, esnext: true */
@@ -17678,7 +17270,7 @@
 	module.exports = Raised;
 
 /***/ }),
-/* 50 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* jshint node: true, esnext: true */
@@ -17800,7 +17392,7 @@
 	})(ReactCSS.Component);
 
 /***/ }),
-/* 51 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17819,8 +17411,8 @@
 	var ReactCSS = __webpack_require__(6);
 	var _ = __webpack_require__(12);
 
-	var Tab = __webpack_require__(52);
-	var Link = __webpack_require__(53);
+	var Tab = __webpack_require__(47);
+	var Link = __webpack_require__(48);
 
 	// var Ink = require('./Ink');
 
@@ -18056,7 +17648,7 @@
 	module.exports = Tabs;
 
 /***/ }),
-/* 52 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18145,7 +17737,7 @@
 	module.exports = Tab;
 
 /***/ }),
-/* 53 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18217,15 +17809,1198 @@
 	module.exports = Link;
 
 /***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(2);
+	var ReactCSS = __webpack_require__(6);
+
+	var SwatchesColor = __webpack_require__(50);
+
+	var SwatchesGroup = (function (_ReactCSS$Component) {
+	  _inherits(SwatchesGroup, _ReactCSS$Component);
+
+	  function SwatchesGroup() {
+	    _classCallCheck(this, SwatchesGroup);
+
+	    _get(Object.getPrototypeOf(SwatchesGroup.prototype), 'constructor', this).call(this);
+
+	    this.handleClick = this.handleClick.bind(this);
+	  }
+
+	  _createClass(SwatchesGroup, [{
+	    key: 'classes',
+	    value: function classes() {
+	      return {
+	        'default': {
+	          group: {
+	            paddingBottom: '10px',
+	            width: '40px',
+	            float: 'left',
+	            marginRight: '10px'
+	          }
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'handleClick',
+	    value: function handleClick(data) {
+	      this.props.onClick(data);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var colors = [];
+	      for (var i = 0; i < this.props.group.length; i++) {
+	        var color = this.props.group[i];
+
+	        colors.push(React.createElement(SwatchesColor, { key: color, color: color, active: color.replace('#', '').toLowerCase() === this.props.active, first: i === 0, last: i === this.props.group.length - 1, onClick: this.handleClick }));
+	      }
+
+	      return React.createElement(
+	        'div',
+	        { style: this.styles().group },
+	        colors
+	      );
+	    }
+	  }]);
+
+	  return SwatchesGroup;
+	})(ReactCSS.Component);
+
+	module.exports = SwatchesGroup;
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(2);
+	var ReactCSS = __webpack_require__(6);
+
+	var SwatchesColor = (function (_ReactCSS$Component) {
+	  _inherits(SwatchesColor, _ReactCSS$Component);
+
+	  function SwatchesColor() {
+	    _classCallCheck(this, SwatchesColor);
+
+	    _get(Object.getPrototypeOf(SwatchesColor.prototype), 'constructor', this).call(this);
+
+	    this.handleClick = this.handleClick.bind(this);
+	  }
+
+	  _createClass(SwatchesColor, [{
+	    key: 'classes',
+	    value: function classes() {
+	      return {
+	        'default': {
+	          color: {
+	            width: '40px',
+	            height: '24px',
+	            cursor: 'pointer',
+	            background: this.props.color,
+	            marginBottom: '1px'
+	          },
+	          check: {
+	            fill: '#fff',
+	            marginLeft: '8px',
+	            display: 'none'
+	          }
+	        },
+	        'first': {
+	          color: {
+	            overflow: 'hidden',
+	            borderRadius: '2px 2px 0 0'
+	          }
+	        },
+	        'last': {
+	          color: {
+	            overflow: 'hidden',
+	            borderRadius: '0 0 2px 2px'
+	          }
+	        },
+	        active: {
+	          check: {
+	            display: 'block'
+	          }
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'handleClick',
+	    value: function handleClick() {
+	      this.props.onClick(this.props.color);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        { style: this.styles().color, onClick: this.handleClick },
+	        React.createElement(
+	          'div',
+	          { style: this.styles().check },
+	          React.createElement(
+	            'svg',
+	            { style: { width: '24px', height: '24px' }, viewBox: '0 0 24 24' },
+	            React.createElement('path', { d: 'M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z' })
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return SwatchesColor;
+	})(ReactCSS.Component);
+
+	module.exports = SwatchesColor;
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(2);
+	var ReactCSS = __webpack_require__(6);
+
+	var _require = __webpack_require__(25);
+
+	var Hue = _require.Hue;
+
+	var SliderSwatches = __webpack_require__(52);
+	var SliderPointer = __webpack_require__(54);
+
+	var Swatches = (function (_ReactCSS$Component) {
+	  _inherits(Swatches, _ReactCSS$Component);
+
+	  function Swatches() {
+	    _classCallCheck(this, Swatches);
+
+	    _get(Object.getPrototypeOf(Swatches.prototype), 'constructor', this).call(this);
+
+	    this.handleChange = this.handleChange.bind(this);
+	  }
+
+	  _createClass(Swatches, [{
+	    key: 'classes',
+	    value: function classes() {
+	      return {
+	        'default': {
+	          slider: {},
+	          hue: {
+	            height: '12px',
+	            position: 'relative'
+	          },
+	          Hue: {
+	            radius: '2px'
+	          }
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'handleChange',
+	    value: function handleChange(data) {
+	      this.props.onChange(data);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        { style: this.styles().slider },
+	        React.createElement(
+	          'div',
+	          { style: this.styles().hue },
+	          React.createElement(Hue, _extends({}, this.styles().Hue, this.props, { pointer: SliderPointer, onChange: this.handleChange }))
+	        ),
+	        React.createElement(
+	          'div',
+	          { style: this.styles().swatches },
+	          React.createElement(SliderSwatches, _extends({}, this.props, { onClick: this.handleChange }))
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Swatches;
+	})(ReactCSS.Component);
+
+	module.exports = Swatches;
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(2);
+	var ReactCSS = __webpack_require__(6);
+
+	var SliderSwatch = __webpack_require__(53);
+
+	var SliderSwatches = (function (_ReactCSS$Component) {
+	  _inherits(SliderSwatches, _ReactCSS$Component);
+
+	  function SliderSwatches() {
+	    _classCallCheck(this, SliderSwatches);
+
+	    _get(Object.getPrototypeOf(SliderSwatches.prototype), 'constructor', this).call(this);
+
+	    this.handleClick = this.handleClick.bind(this);
+	  }
+
+	  _createClass(SliderSwatches, [{
+	    key: 'classes',
+	    value: function classes() {
+	      return {
+	        'default': {
+	          swatches: {
+	            marginRight: '-4px',
+	            marginTop: '20px'
+	          },
+	          swatch: {
+	            width: '19.65%',
+	            marginRight: '1px',
+	            float: 'left'
+	          },
+	          clear: {
+	            clear: 'both'
+	          }
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'handleClick',
+	    value: function handleClick(data) {
+	      this.props.onClick(data);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        { style: this.styles().swatches },
+	        React.createElement(
+	          'div',
+	          { style: this.styles().swatch },
+	          React.createElement(SliderSwatch, _extends({}, this.props, { offset: '.80', active: Math.round(this.props.hsl.l * 100) / 100 == .80 && Math.round(this.props.hsl.s * 100) / 100 == .50, onClick: this.handleClick, first: true }))
+	        ),
+	        React.createElement(
+	          'div',
+	          { style: this.styles().swatch },
+	          React.createElement(SliderSwatch, _extends({}, this.props, { offset: '.65', active: Math.round(this.props.hsl.l * 100) / 100 == .65 && Math.round(this.props.hsl.s * 100) / 100 == .50, onClick: this.handleClick }))
+	        ),
+	        React.createElement(
+	          'div',
+	          { style: this.styles().swatch },
+	          React.createElement(SliderSwatch, _extends({}, this.props, { offset: '.50', active: Math.round(this.props.hsl.l * 100) / 100 == .50 && Math.round(this.props.hsl.s * 100) / 100 == .50, onClick: this.handleClick }))
+	        ),
+	        React.createElement(
+	          'div',
+	          { style: this.styles().swatch },
+	          React.createElement(SliderSwatch, _extends({}, this.props, { offset: '.35', active: Math.round(this.props.hsl.l * 100) / 100 == .35 && Math.round(this.props.hsl.s * 100) / 100 == .50, onClick: this.handleClick }))
+	        ),
+	        React.createElement(
+	          'div',
+	          { style: this.styles().swatch },
+	          React.createElement(SliderSwatch, _extends({}, this.props, { offset: '.20', active: Math.round(this.props.hsl.l * 100) / 100 == .20 && Math.round(this.props.hsl.s * 100) / 100 == .50, onClick: this.handleClick, last: true }))
+	        ),
+	        React.createElement('div', { style: this.styles().clear })
+	      );
+	    }
+	  }]);
+
+	  return SliderSwatches;
+	})(ReactCSS.Component);
+
+	module.exports = SliderSwatches;
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(2);
+	var ReactCSS = __webpack_require__(6);
+
+	var SliderSwatch = (function (_ReactCSS$Component) {
+	  _inherits(SliderSwatch, _ReactCSS$Component);
+
+	  function SliderSwatch() {
+	    _classCallCheck(this, SliderSwatch);
+
+	    _get(Object.getPrototypeOf(SliderSwatch.prototype), 'constructor', this).call(this);
+
+	    this.handleClick = this.handleClick.bind(this);
+	  }
+
+	  _createClass(SliderSwatch, [{
+	    key: 'classes',
+	    value: function classes() {
+	      return {
+	        'default': {
+	          swatch: {
+	            height: '12px',
+	            background: 'hsl(' + this.props.hsl.h + ', 50%, ' + this.props.offset * 100 + '%)',
+	            cursor: 'pointer'
+	          }
+	        },
+	        'first': {
+	          swatch: {
+	            borderRadius: '2px 0 0 2px'
+	          }
+	        },
+	        'last': {
+	          swatch: {
+	            borderRadius: '0 2px 2px 0'
+	          }
+	        },
+	        active: {
+	          swatch: {
+	            transform: 'scaleY(1.8)',
+	            borderRadius: '3.6px/2px'
+	          }
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'handleClick',
+	    value: function handleClick() {
+	      this.props.onClick({ h: this.props.hsl.h, s: .5, l: this.props.offset });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement('div', { style: this.styles().swatch, onClick: this.handleClick });
+	    }
+	  }]);
+
+	  return SliderSwatch;
+	})(ReactCSS.Component);
+
+	module.exports = SliderSwatch;
+
+/***/ }),
 /* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	
-	module.exports = __webpack_require__(55);
+	'use strict';
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(2);
+	var ReactCSS = __webpack_require__(6);
+
+	var SliderPointer = (function (_ReactCSS$Component) {
+	  _inherits(SliderPointer, _ReactCSS$Component);
+
+	  function SliderPointer() {
+	    _classCallCheck(this, SliderPointer);
+
+	    _get(Object.getPrototypeOf(SliderPointer.prototype), 'constructor', this).apply(this, arguments);
+	  }
+
+	  _createClass(SliderPointer, [{
+	    key: 'classes',
+	    value: function classes() {
+	      return {
+	        'default': {
+	          picker: {
+	            width: '14px',
+	            height: '14px',
+	            borderRadius: '6px',
+	            transform: 'translate(-7px, -1px)',
+	            backgroundColor: 'rgb(248, 248, 248)',
+	            boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.37)'
+	          }
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement('div', { style: this.styles().picker });
+	    }
+	  }]);
+
+	  return SliderPointer;
+	})(ReactCSS.Component);
+
+	module.exports = SliderPointer;
 
 /***/ }),
 /* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(2);
+	var ReactCSS = __webpack_require__(6);
+	var color = __webpack_require__(22);
+
+	var _require = __webpack_require__(43);
+
+	var Raised = _require.Raised;
+
+	var _require2 = __webpack_require__(25);
+
+	var EditableInput = _require2.EditableInput;
+
+	var Material = (function (_ReactCSS$Component) {
+	  _inherits(Material, _ReactCSS$Component);
+
+	  function Material() {
+	    _classCallCheck(this, Material);
+
+	    _get(Object.getPrototypeOf(Material.prototype), 'constructor', this).call(this);
+
+	    this.handleChange = this.handleChange.bind(this);
+	  }
+
+	  _createClass(Material, [{
+	    key: 'classes',
+	    value: function classes() {
+	      return {
+	        'default': {
+	          material: {
+	            width: '98px',
+	            height: '98px',
+	            padding: '16px',
+	            fontFamily: 'Roboto'
+	          },
+	          Hex: {
+	            style: {
+	              wrap: {
+	                position: 'relative'
+	              },
+	              input: {
+	                width: '100%',
+	                marginTop: '12px',
+	                fontSize: '15px',
+	                color: '#333',
+	                padding: '0',
+	                border: '0',
+	                borderBottom: '2px solid #' + this.props.hex,
+	                outline: 'none',
+	                height: '30px'
+	              },
+	              label: {
+	                position: 'absolute',
+	                top: '0',
+	                left: '0',
+	                fontSize: '11px',
+	                color: '#999999',
+	                textTransform: 'capitalize'
+	              }
+	            }
+	          },
+	          Input: {
+	            style: {
+	              wrap: {
+	                position: 'relative'
+	              },
+	              input: {
+	                width: '100%',
+	                marginTop: '12px',
+	                fontSize: '15px',
+	                color: '#333',
+	                padding: '0',
+	                border: '0',
+	                borderBottom: '1px solid #eee',
+	                outline: 'none',
+	                height: '30px'
+	              },
+	              label: {
+	                position: 'absolute',
+	                top: '0',
+	                left: '0',
+	                fontSize: '11px',
+	                color: '#999999',
+	                textTransform: 'capitalize'
+	              }
+	            }
+	          },
+	          split: {
+	            display: 'flex',
+	            marginRight: '-10px',
+	            paddingTop: '11px'
+	          },
+	          third: {
+	            flex: '1',
+	            paddingRight: '10px'
+	          }
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'handleChange',
+	    value: function handleChange(data) {
+	      if (data.hex) {
+	        color.isValidHex(data.hex) && this.props.onChange(data.hex);
+	      } else if (data.r || data.g || data.b) {
+	        this.props.onChange({
+	          r: data.r || this.props.rgb.r,
+	          g: data.g || this.props.rgb.g,
+	          b: data.b || this.props.rgb.b
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        Raised,
+	        null,
+	        React.createElement(
+	          'div',
+	          { style: this.styles().material },
+	          React.createElement(EditableInput, _extends({}, this.styles().Hex, { label: 'hex', value: '#' + this.props.hex, onChange: this.handleChange })),
+	          React.createElement(
+	            'div',
+	            { style: this.styles().split, className: 'flexbox-fix' },
+	            React.createElement(
+	              'div',
+	              { style: this.styles().third },
+	              React.createElement(EditableInput, _extends({}, this.styles().Input, { label: 'r', value: this.props.rgb.r, onChange: this.handleChange }))
+	            ),
+	            React.createElement(
+	              'div',
+	              { style: this.styles().third },
+	              React.createElement(EditableInput, _extends({}, this.styles().Input, { label: 'g', value: this.props.rgb.g, onChange: this.handleChange }))
+	            ),
+	            React.createElement(
+	              'div',
+	              { style: this.styles().third },
+	              React.createElement(EditableInput, _extends({}, this.styles().Input, { label: 'b', value: this.props.rgb.b, onChange: this.handleChange }))
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Material;
+	})(ReactCSS.Component);
+
+	module.exports = Material;
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(2);
+	var ReactCSS = __webpack_require__(6);
+	var color = __webpack_require__(22);
+
+	var _require = __webpack_require__(43);
+
+	var Raised = _require.Raised;
+
+	var CompactColor = __webpack_require__(57);
+	var CompactFields = __webpack_require__(58);
+
+	var Compact = (function (_ReactCSS$Component) {
+	  _inherits(Compact, _ReactCSS$Component);
+
+	  function Compact() {
+	    _classCallCheck(this, Compact);
+
+	    _get(Object.getPrototypeOf(Compact.prototype), 'constructor', this).call(this);
+
+	    this.handleChange = this.handleChange.bind(this);
+	  }
+
+	  _createClass(Compact, [{
+	    key: 'classes',
+	    value: function classes() {
+	      return {
+	        'default': {
+	          Compact: {
+	            background: '#f6f6f6',
+	            radius: '4px'
+	          },
+	          compact: {
+	            paddingTop: '5px',
+	            paddingLeft: '5px',
+	            boxSizing: 'initial',
+	            width: '240px'
+	          },
+
+	          clear: {
+	            clear: 'both'
+	          }
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'handleChange',
+	    value: function handleChange(data) {
+	      if (data.hex) {
+	        color.isValidHex(data.hex) && this.props.onChange(data.hex);
+	      } else {
+	        this.props.onChange(data);
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var colors = [];
+	      if (this.props.colors) {
+	        for (var i = 0; i < this.props.colors.length; i++) {
+	          var color = this.props.colors[i];
+	          colors.push(React.createElement(CompactColor, { key: color, color: color, active: color.replace('#', '').toLowerCase() == this.props.hex, onClick: this.handleChange }));
+	        }
+	      }
+
+	      return React.createElement(
+	        Raised,
+	        this.styles().Compact,
+	        React.createElement(
+	          'div',
+	          { style: this.styles().compact },
+	          colors,
+	          React.createElement('div', { style: this.styles().clear }),
+	          React.createElement(CompactFields, _extends({}, this.props, { onChange: this.handleChange }))
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Compact;
+	})(ReactCSS.Component);
+
+	Compact.defaultProps = {
+	  colors: ['#4D4D4D', '#999999', '#FFFFFF', '#F44E3B', '#FE9200', '#FCDC00', '#DBDF00', '#A4DD00', '#68CCCA', '#73D8FF', '#AEA1FF', '#FDA1FF', '#333333', '#808080', '#cccccc', '#D33115', '#E27300', '#FCC400', '#B0BC00', '#68BC00', '#16A5A5', '#009CE0', '#7B64FF', '#FA28FF', '#000000', '#666666', '#B3B3B3', '#9F0500', '#C45100', '#FB9E00', '#808900', '#194D33', '#0C797D', '#0062B1', '#653294', '#AB149E']
+	};
+
+	module.exports = Compact;
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(2);
+	var ReactCSS = __webpack_require__(6);
+
+	var CompactColor = (function (_ReactCSS$Component) {
+	  _inherits(CompactColor, _ReactCSS$Component);
+
+	  function CompactColor() {
+	    _classCallCheck(this, CompactColor);
+
+	    _get(Object.getPrototypeOf(CompactColor.prototype), 'constructor', this).call(this);
+
+	    this.handleClick = this.handleClick.bind(this);
+	  }
+
+	  _createClass(CompactColor, [{
+	    key: 'classes',
+	    value: function classes() {
+	      return {
+	        'default': {
+	          color: {
+	            background: this.props.color,
+	            width: '15px',
+	            height: '15px',
+	            float: 'left',
+	            marginRight: '5px',
+	            marginBottom: '5px',
+	            position: 'relative',
+	            cursor: 'pointer'
+	          },
+	          dot: {
+	            Absolute: '5px 5px 5px 5px',
+	            background: '#fff',
+	            borderRadius: '50%',
+	            opacity: '0'
+	          }
+	        },
+	        'active': {
+	          dot: {
+	            opacity: '1'
+	          }
+	        },
+	        'color-#FFFFFF': {
+	          color: {
+	            boxShadow: 'inset 0 0 0 1px #ddd'
+	          },
+	          dot: {
+	            background: '#000'
+	          }
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'handleClick',
+	    value: function handleClick() {
+	      this.props.onClick({ hex: this.props.color });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        { style: this.styles().color, onClick: this.handleClick },
+	        React.createElement('div', { style: this.styles().dot })
+	      );
+	    }
+	  }]);
+
+	  return CompactColor;
+	})(ReactCSS.Component);
+
+	module.exports = CompactColor;
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(2);
+	var ReactCSS = __webpack_require__(6);
+
+	var _require = __webpack_require__(25);
+
+	var EditableInput = _require.EditableInput;
+
+	var CompactColor = (function (_ReactCSS$Component) {
+	  _inherits(CompactColor, _ReactCSS$Component);
+
+	  function CompactColor() {
+	    _classCallCheck(this, CompactColor);
+
+	    _get(Object.getPrototypeOf(CompactColor.prototype), 'constructor', this).call(this);
+
+	    this.handleChange = this.handleChange.bind(this);
+	  }
+
+	  _createClass(CompactColor, [{
+	    key: 'classes',
+	    value: function classes() {
+	      return {
+	        'default': {
+	          fields: {
+	            display: 'flex',
+	            paddingBottom: '6px',
+	            paddingRight: '5px',
+	            position: 'relative'
+	          },
+	          active: {
+	            position: 'absolute',
+	            top: '6px',
+	            left: '5px',
+	            height: '9px',
+	            width: '9px',
+	            background: '#' + this.props.hex
+	          },
+	          Hex: {
+	            style: {
+	              wrap: {
+	                flex: '6',
+	                position: 'relative'
+	              },
+	              input: {
+	                width: '80%',
+	                padding: '0',
+	                paddingLeft: '20%',
+	                border: 'none',
+	                outline: 'none',
+	                background: 'none',
+	                fontSize: '12px',
+	                color: '#333',
+	                height: '16px'
+	              },
+	              label: {
+	                display: 'none'
+	              }
+	            }
+	          },
+	          RGB: {
+	            style: {
+	              wrap: {
+	                flex: '3',
+	                position: 'relative'
+	              },
+	              input: {
+	                width: '70%',
+	                padding: '0',
+	                paddingLeft: '30%',
+	                border: 'none',
+	                outline: 'none',
+	                background: 'none',
+	                fontSize: '12px',
+	                color: '#333',
+	                height: '16px'
+	              },
+	              label: {
+	                position: 'absolute',
+	                top: '3px',
+	                left: '0',
+	                lineHeight: '16px',
+	                textTransform: 'uppercase',
+	                fontSize: '12px',
+	                color: '#999'
+	              }
+	            }
+	          }
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'handleChange',
+	    value: function handleChange(data) {
+	      if (data.r || data.g || data.b) {
+	        this.props.onChange({
+	          r: data.r || this.props.rgb.r,
+	          g: data.g || this.props.rgb.g,
+	          b: data.b || this.props.rgb.b
+	        });
+	      } else {
+	        this.props.onChange(data);
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        { style: this.styles().fields, className: 'flexbox-fix' },
+	        React.createElement('div', { style: this.styles().active }),
+	        React.createElement(EditableInput, _extends({}, this.styles().Hex, { label: 'hex', value: '#' + this.props.hex, onChange: this.handleChange })),
+	        React.createElement(EditableInput, _extends({}, this.styles().RGB, { label: 'r', value: this.props.rgb.r, onChange: this.handleChange })),
+	        React.createElement(EditableInput, _extends({}, this.styles().RGB, { label: 'g', value: this.props.rgb.g, onChange: this.handleChange })),
+	        React.createElement(EditableInput, _extends({}, this.styles().RGB, { label: 'b', value: this.props.rgb.b, onChange: this.handleChange }))
+	      );
+	    }
+	  }]);
+
+	  return CompactColor;
+	})(ReactCSS.Component);
+
+	module.exports = CompactColor;
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	
+	module.exports = {
+	  Container: __webpack_require__(60),
+	  Grid: __webpack_require__(61),
+	};
+
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(2);
+	var ReactCSS = __webpack_require__(6);
+
+	var Container = (function (_ReactCSS$Component) {
+	  _inherits(Container, _ReactCSS$Component);
+
+	  function Container() {
+	    _classCallCheck(this, Container);
+
+	    _get(Object.getPrototypeOf(Container.prototype), 'constructor', this).apply(this, arguments);
+	  }
+
+	  _createClass(Container, [{
+	    key: 'classes',
+	    value: function classes() {
+	      return {
+	        'default': {
+	          container: {
+	            maxWidth: this.props.width + 'px',
+	            padding: '0 20px',
+	            margin: '0 auto'
+	          }
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        { style: this.styles().container },
+	        this.props.children
+	      );
+	    }
+	  }]);
+
+	  return Container;
+	})(ReactCSS.Component);
+
+	Container.defaultProps = {
+	  width: 960
+	};
+
+	module.exports = Container;
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(2);
+	var ReactCSS = __webpack_require__(6);
+
+	var Grid = (function (_ReactCSS$Component) {
+	  _inherits(Grid, _ReactCSS$Component);
+
+	  function Grid() {
+	    _classCallCheck(this, Grid);
+
+	    _get(Object.getPrototypeOf(Grid.prototype), 'constructor', this).apply(this, arguments);
+	  }
+
+	  _createClass(Grid, [{
+	    key: 'classes',
+	    value: function classes() {
+	      return {
+	        'default': {
+	          grid: {
+	            position: 'relative'
+	          }
+	        },
+	        'preset-default': {
+	          left: {
+	            position: 'absolute',
+	            width: '170px'
+	          },
+	          main: {
+	            paddingLeft: '190px'
+	          }
+	        },
+	        'preset-one': {
+	          left: {
+	            width: 'auto',
+	            position: 'relative',
+	            paddingRight: '260px'
+	          },
+	          main: {
+	            position: 'absolute',
+	            right: '0',
+	            top: '0',
+	            width: '225px'
+	          }
+	        },
+	        'preset-two': {
+	          left: {
+	            width: '220px',
+	            position: 'absolute'
+	          },
+	          main: {
+	            paddingLeft: '267px'
+	          }
+	        },
+	        'preset-three': {
+	          left: {
+	            width: '410px',
+	            position: 'absolute',
+	            height: '100%'
+	          },
+	          main: {
+	            paddingLeft: '455px'
+	          }
+	        },
+
+	        'mobile-default': {
+	          main: {
+	            padding: '0'
+	          },
+	          left: {
+	            display: 'none'
+	          }
+	        },
+	        'mobile-one': {
+	          left: {
+	            paddingRight: '0'
+	          },
+	          main: {
+	            display: 'none'
+	          }
+	        },
+	        'mobile-two': {
+	          grid: {
+	            position: 'relative',
+	            width: '100%'
+	          },
+	          left: {
+	            position: 'absolute',
+	            left: '50%',
+	            transform: 'translateX(-50%)',
+	            marginLeft: '-20px'
+	          },
+	          main: {
+	            display: 'none'
+	          }
+	        },
+	        'mobile-three': {
+	          grid: {
+	            display: 'none'
+	          }
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'styles',
+	    value: function styles() {
+	      return this.css({
+	        'mobile-default': this.props.preset === 'default' && document.getElementById('root').clientWidth < 500,
+	        'mobile-one': this.props.preset === 'one' && document.getElementById('root').clientWidth < 500,
+	        'mobile-two': this.props.preset === 'two' && document.getElementById('root').clientWidth < 500,
+	        'mobile-three': this.props.preset === 'three' && document.getElementById('root').clientWidth < 500
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        { style: this.styles().grid },
+	        React.createElement(
+	          'div',
+	          { style: this.styles().left },
+	          this.props.children[0]
+	        ),
+	        React.createElement(
+	          'div',
+	          { style: this.styles().main },
+	          this.props.children[1]
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Grid;
+	})(ReactCSS.Component);
+
+	Grid.defaultProps = {
+	  preset: 'default'
+	};
+
+	module.exports = Grid;
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	
+	module.exports = __webpack_require__(63);
+
+
+/***/ }),
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18301,7 +19076,7 @@
 	module.exports = Move;
 
 /***/ }),
-/* 56 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18317,21 +19092,21 @@
 	var React = __webpack_require__(2);
 	var ReactCSS = __webpack_require__(6);
 
-	var _require = __webpack_require__(45);
+	var _require = __webpack_require__(59);
 
 	var Container = _require.Container;
 	var Grid = _require.Grid;
 
-	var _require2 = __webpack_require__(48);
+	var _require2 = __webpack_require__(43);
 
 	var Raised = _require2.Raised;
 
-	var Docs = __webpack_require__(57);
-	var Markdown = __webpack_require__(65);
+	var Docs = __webpack_require__(65);
+	var Markdown = __webpack_require__(73);
 
-	var documentation = __webpack_require__(70);
+	var documentation = __webpack_require__(78);
 
-	var _require3 = __webpack_require__(89);
+	var _require3 = __webpack_require__(97);
 
 	var Button = _require3.Button;
 	var buttonmd = _require3.buttonmd;
@@ -18455,15 +19230,15 @@
 	module.exports = HomeDocumentation;
 
 /***/ }),
-/* 57 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	
-	module.exports = __webpack_require__(58);
+	module.exports = __webpack_require__(66);
 
 
 /***/ }),
-/* 58 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18478,16 +19253,16 @@
 
 	var React = __webpack_require__(2);
 	var ReactCSS = __webpack_require__(6);
-	var markdown = __webpack_require__(59);
+	var markdown = __webpack_require__(67);
 
-	var _require = __webpack_require__(45);
+	var _require = __webpack_require__(59);
 
 	var Grid = _require.Grid;
 
-	var MarkdownTitle = __webpack_require__(64);
-	var Markdown = __webpack_require__(65);
-	var Code = __webpack_require__(66);
-	var Sidebar = __webpack_require__(68);
+	var MarkdownTitle = __webpack_require__(72);
+	var Markdown = __webpack_require__(73);
+	var Code = __webpack_require__(74);
+	var Sidebar = __webpack_require__(76);
 
 	var Docs = (function (_ReactCSS$Component) {
 	  _inherits(Docs, _ReactCSS$Component);
@@ -18637,13 +19412,13 @@
 	module.exports = Docs;
 
 /***/ }),
-/* 59 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Remarkable = __webpack_require__(60);
-	var hljs = __webpack_require__(61);
+	var Remarkable = __webpack_require__(68);
+	var hljs = __webpack_require__(69);
 	var regularMd = new Remarkable();
 	var codeMd = new Remarkable({
 	  highlight: function highlight(str) {
@@ -18727,7 +19502,7 @@
 	};
 
 /***/ }),
-/* 60 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var require;var require;/*! remarkable 1.5.0 https://github.com//jonschlinkert/remarkable @license MIT */ ! function(e) {
@@ -23330,18 +24105,18 @@
 	});
 
 /***/ }),
-/* 61 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var hljs = __webpack_require__(62);
+	var hljs = __webpack_require__(70);
 
-	hljs.registerLanguage('javascript', __webpack_require__(63));
+	hljs.registerLanguage('javascript', __webpack_require__(71));
 
 	module.exports = hljs;
 
 
 /***/ }),
-/* 62 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -24118,7 +24893,7 @@
 
 
 /***/ }),
-/* 63 */
+/* 71 */
 /***/ (function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -24235,7 +25010,7 @@
 	};
 
 /***/ }),
-/* 64 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* jshint node: true, esnext: true */
@@ -24338,7 +25113,7 @@
 	})(ReactCSS.Component);
 
 /***/ }),
-/* 65 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24353,9 +25128,9 @@
 
 	var React = __webpack_require__(2);
 	var ReactCSS = __webpack_require__(6);
-	var markdown = __webpack_require__(59);
+	var markdown = __webpack_require__(67);
 
-	var Code = __webpack_require__(66);
+	var Code = __webpack_require__(74);
 
 	module.exports = (function (_ReactCSS$Component) {
 	  _inherits(Markdown, _ReactCSS$Component);
@@ -24424,7 +25199,7 @@
 	})(ReactCSS.Component);
 
 /***/ }),
-/* 66 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24439,10 +25214,10 @@
 
 	var React = __webpack_require__(2);
 	var ReactCSS = __webpack_require__(6);
-	var markdown = __webpack_require__(59);
-	var context = __webpack_require__(67);
+	var markdown = __webpack_require__(67);
+	var context = __webpack_require__(75);
 
-	var _require = __webpack_require__(48);
+	var _require = __webpack_require__(43);
 
 	var Tile = _require.Tile;
 	var Raised = _require.Raised;
@@ -24576,7 +25351,7 @@
 	module.exports = Code;
 
 /***/ }),
-/* 67 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* jshint node: true, esnext: true, browser: true */
@@ -24831,7 +25606,7 @@
 	module.exports = context;
 
 /***/ }),
-/* 68 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* jshint node: true, esnext: true */
@@ -24847,13 +25622,13 @@
 
 	var React = __webpack_require__(2);
 	var ReactCSS = __webpack_require__(6);
-	var markdown = __webpack_require__(59);
+	var markdown = __webpack_require__(67);
 
-	var _require = __webpack_require__(48);
+	var _require = __webpack_require__(43);
 
 	var Tile = _require.Tile;
 
-	var SidebarItem = __webpack_require__(69);
+	var SidebarItem = __webpack_require__(77);
 
 	module.exports = (function (_ReactCSS$Component) {
 	  _inherits(Sidebar, _ReactCSS$Component);
@@ -24937,7 +25712,7 @@
 	})(ReactCSS.Component);
 
 /***/ }),
-/* 69 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* jshint node: true, esnext: true */
@@ -24954,7 +25729,7 @@
 	var React = __webpack_require__(2);
 	var ReactCSS = __webpack_require__(6);
 
-	var _require = __webpack_require__(48);
+	var _require = __webpack_require__(43);
 
 	var Tile = _require.Tile;
 
@@ -25030,155 +25805,155 @@
 	})(ReactCSS.Component);
 
 /***/ }),
-/* 70 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = {
-	  '01-about': __webpack_require__(71),
-	  '02-getting-started': __webpack_require__(72),
-	  '02.01-install': __webpack_require__(73),
-	  '02.02-include': __webpack_require__(74),
-	  '02.03-display': __webpack_require__(75),
-	  '03-api': __webpack_require__(76),
-	  '03.01-type': __webpack_require__(77),
-	  '03.02-onChange': __webpack_require__(78),
-	  '03.03-onChangeComplete': __webpack_require__(79),
-	  '03.04-color': __webpack_require__(80),
-	  '03.05-display': __webpack_require__(81),
-	  '03.06-onClose': __webpack_require__(82),
-	  '03.07-position': __webpack_require__(83),
-	  '03.08-positionCSS': __webpack_require__(84),
-	  '04-create': __webpack_require__(85),
-	  '04.01-parent': __webpack_require__(86),
-	  '04.02-helpers': __webpack_require__(87),
-	  '05-examples': __webpack_require__(88)
+	  '01-about': __webpack_require__(79),
+	  '02-getting-started': __webpack_require__(80),
+	  '02.01-install': __webpack_require__(81),
+	  '02.02-include': __webpack_require__(82),
+	  '02.03-display': __webpack_require__(83),
+	  '03-api': __webpack_require__(84),
+	  '03.01-type': __webpack_require__(85),
+	  '03.02-onChange': __webpack_require__(86),
+	  '03.03-onChangeComplete': __webpack_require__(87),
+	  '03.04-color': __webpack_require__(88),
+	  '03.05-display': __webpack_require__(89),
+	  '03.06-onClose': __webpack_require__(90),
+	  '03.07-position': __webpack_require__(91),
+	  '03.08-positionCSS': __webpack_require__(92),
+	  '04-create': __webpack_require__(93),
+	  '04.01-parent': __webpack_require__(94),
+	  '04.02-helpers': __webpack_require__(95),
+	  '05-examples': __webpack_require__(96)
 	};
-
-/***/ }),
-/* 71 */
-/***/ (function(module, exports) {
-
-	module.exports = "---\nid: about\ntitle: About\n---\n\n**7 Different Pickers** - Sketch, Photoshop, Chrome and many more\n\n**Popup or Block** - It can be used it as a popup or always visible\n\n**Make Your Own** - Use the building block components to make your own\n";
-
-/***/ }),
-/* 72 */
-/***/ (function(module, exports) {
-
-	module.exports = "---\nid: getting-started\ntitle: Getting Started\n---\n";
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports) {
-
-	module.exports = "---\nid: usage-install\ntitle: Install\n---\nStart by installing `react-color` via npm:\n```\nnpm install react-color --save\n```\n";
-
-/***/ }),
-/* 74 */
-/***/ (function(module, exports) {
-
-	module.exports = "---\nid: usage-include\ntitle: Include the Component\n---\nRequire `react-color` at the top of a component and then use `ColorPicker` in the render function:\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  render() {\n    return <ColorPicker type=\"sketch\" />;\n  }\n}\n```\n";
-
-/***/ }),
-/* 75 */
-/***/ (function(module, exports) {
-
-	module.exports = "---\nid: usage-display\ntitle: Display It\n---\nDisplay the color picker popup on click, or don't define `display` and it will always be visible.\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  constructor() {\n    super();\n    this.state = {\n      displayColorPicker: false,\n    };\n    this.handleClick = this.handleClick.bind(this);\n  }\n\n  handleClick() {\n    this.setState({ displayColorPicker: !this.state.displayColorPicker });\n  }\n\n  render() {\n    return (\n      <div>\n        <button onClick={ this.handleClick }>Pick Color</button>\n        <ColorPicker display={ this.state.displayColorPicker } type=\"sketch\" />\n      </div>\n    );\n  }\n}\n```\n";
-
-/***/ }),
-/* 76 */
-/***/ (function(module, exports) {
-
-	module.exports = "---\nid: api\ntitle: Component API\n---\n";
-
-/***/ }),
-/* 77 */
-/***/ (function(module, exports) {
-
-	module.exports = "---\nid: api-type\ntitle: type\n---\nA string that defines the type of color picker theme to display. Types include: `sketch` `chrome` `photoshop` `slider` `compact` `material` `swatches`\n";
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports) {
-
-	module.exports = "---\nid: api-onChange\ntitle: onChange\n---\nPass a function to call every time the color is changed. Use this to store the color in the state of a parent component or to make other transformations.\n\nKeep in mind this is called on drag events that can happen quite frequently. If you just need to get the color once use `onChangeComplete`.\n\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  handleChange(color) {\n    // color = {\n    //   hex: '#333',\n    //   rgb: {\n    //     r: 51,\n    //     g: 51,\n    //     b: 51,\n    //     a: 1,\n    //   },\n    //   hsl: {\n    //     h: 0,\n    //     s: 0,\n    //     l: .20,\n    //     a: 1,\n    //   },\n    // }\n  }\n\n  render() {\n    return <ColorPicker onChange={ this.handleChange } />;\n  }\n}\n```\n";
 
 /***/ }),
 /* 79 */
 /***/ (function(module, exports) {
 
-	module.exports = "---\nid: api-onChangeComplete\ntitle: onChangeComplete\n---\nPass a function to call once a color change is complete.\n\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  constructor() {\n    super();\n    this.state = {\n      background: '#fff',\n    };\n    this.handleChangeComplete = this.handleChangeComplete.bind(this);\n  }\n\n  handleChangeComplete(color) {\n    this.setState({ background: color.hex });\n  }\n\n  render() {\n    return <ColorPicker onChangeComplete={ this.handleChangeComplete } />;\n  }\n}\n```\n";
+	module.exports = "---\nid: about\ntitle: About\n---\n\n**7 Different Pickers** - Sketch, Photoshop, Chrome and many more\n\n**Popup or Block** - It can be used it as a popup or always visible\n\n**Make Your Own** - Use the building block components to make your own\n";
 
 /***/ }),
 /* 80 */
 /***/ (function(module, exports) {
 
-	module.exports = "---\nid: api-color\ntitle: color\n---\nColor controls what color is active on the color picker. You can use this to initialize the color picker with a particular color, or to keep it in sync with the state of a parent component.\n\nColor accepts either a string of a hex color `'#333'` or a object of rgb or hsl values `{ r: 51, g: 51, b: 51 }` or `{ h: 0, s: 0, l: .10 }`. Both rgb and hsl will also take a `a: 1` value for alpha.\n\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  constructor() {\n    super();\n    this.state = {\n      background: '#fff',\n    };\n    this.handleChangeComplete = this.handleChangeComplete.bind(this);\n  }\n\n  handleChangeComplete(color) {\n    this.setState({ background: color.hex });\n  }\n\n  render() {\n    return <ColorPicker color={ this.state.background } type=\"sketch\" onChangeComplete={ this.handleChangeComplete } />;\n  }\n}\n```\nIn this case, the color picker will initialize with the color `#fff`. When the color is changed, `handleChangeComplete` will fire and set the new color to state.\n";
+	module.exports = "---\nid: getting-started\ntitle: Getting Started\n---\n";
 
 /***/ }),
 /* 81 */
 /***/ (function(module, exports) {
 
-	module.exports = "---\nid: api-display\ntitle: display\n---\nBy default, the color picker is a block element that is always visible. To display the popup programmatically, pass `display` a boolean value:\n\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  constructor() {\n    super();\n    this.state = {\n      displayColorPicker: false,\n    };\n    this.handleClick = this.handleClick.bind(this);\n  }\n\n  handleClick() {\n    this.setState({ displayColorPicker: !this.state.displayColorPicker });\n  }\n\n  render() {\n    return (\n      <div>\n        <button onClick={ this.handleClick }>Pick Color</button>\n        <ColorPicker display={ this.state.displayColorPicker } type=\"sketch\" />\n      </div>\n    );\n  }\n}\n```\n";
+	module.exports = "---\nid: usage-install\ntitle: Install\n---\nStart by installing `react-color` via npm:\n```\nnpm install react-color --save\n```\n";
 
 /***/ }),
 /* 82 */
 /***/ (function(module, exports) {
 
-	module.exports = "---\nid: api-onClose\ntitle: onClose\n---\nIf you are using the ColorPicker as a popup, you can pass a function to `onClose` that will fire when the popup is closed. The callback gets called with the latest color information as the first argument.\n\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  handleClose(color) {\n    ...\n  }\n\n  render() {\n    return <ColorPicker display={ true } onClose={ this.handleClose } />;\n  }\n}\n```\n";
+	module.exports = "---\nid: usage-include\ntitle: Include the Component\n---\nRequire `react-color` at the top of a component and then use `ColorPicker` in the render function:\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  render() {\n    return <ColorPicker type=\"sketch\" />;\n  }\n}\n```\n";
 
 /***/ }),
 /* 83 */
 /***/ (function(module, exports) {
 
-	module.exports = "---\nid: api-position\ntitle: position\n---\nUse `position` alongside `display` to position the popup relative to the container. It takes `left` `right` and `below` as options.\n\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  render() {\n    return <ColorPicker position=\"below\" display={ true } />;\n  }\n}\n```\n";
+	module.exports = "---\nid: usage-display\ntitle: Display It\n---\nDisplay the color picker popup on click, or don't define `display` and it will always be visible.\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  constructor() {\n    super();\n    this.state = {\n      displayColorPicker: false,\n    };\n    this.handleClick = this.handleClick.bind(this);\n  }\n\n  handleClick() {\n    this.setState({ displayColorPicker: !this.state.displayColorPicker });\n  }\n\n  render() {\n    return (\n      <div>\n        <button onClick={ this.handleClick }>Pick Color</button>\n        <ColorPicker display={ this.state.displayColorPicker } type=\"sketch\" />\n      </div>\n    );\n  }\n}\n```\n";
 
 /***/ }),
 /* 84 */
 /***/ (function(module, exports) {
 
-	module.exports = "---\nid: api-positionCSS\ntitle: positionCSS\n---\nUse `positionCSS` alongside `display` to declare a custom position for the color picker with a CSS object:\n\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  render() {\n    var popupPosition = {\n      position: 'absolute',\n      top: '100px',\n      left: '20px',\n    };\n    return <ColorPicker positionCSS={ popupPosition } display={ true } />;\n  }\n}\n```\n";
+	module.exports = "---\nid: api\ntitle: Component API\n---\n";
 
 /***/ }),
 /* 85 */
 /***/ (function(module, exports) {
 
-	module.exports = "---\nid: create\ntitle: Create Your Own\n---\n";
+	module.exports = "---\nid: api-type\ntitle: type\n---\nA string that defines the type of color picker theme to display. Types include: `sketch` `chrome` `photoshop` `slider` `compact` `material` `swatches`\n";
 
 /***/ }),
 /* 86 */
 /***/ (function(module, exports) {
 
-	module.exports = "---\nid: create-parent\ntitle: Parent Component\n---\nTo make a custom color picker, create a top-level component that will act as the bridge with the ColorPicker component. Pass that component down on the custom property:\n\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\nvar CustomColorPicker = require('./CustomColorPicker');\n\nclass Component extends React.Component {\n  render() {\n    return <ColorPicker custom={ CustomColorPicker } />;\n  }\n}\n```\n\nThis component will be passed `hex`, `rgb` and `hsl` values as props for the current color. It is also provided an `onChange` prop that should be called to propagate a new color. Pass it a hex string, or an rgb or hsl object.\n";
+	module.exports = "---\nid: api-onChange\ntitle: onChange\n---\nPass a function to call every time the color is changed. Use this to store the color in the state of a parent component or to make other transformations.\n\nKeep in mind this is called on drag events that can happen quite frequently. If you just need to get the color once use `onChangeComplete`.\n\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  handleChange(color) {\n    // color = {\n    //   hex: '#333',\n    //   rgb: {\n    //     r: 51,\n    //     g: 51,\n    //     b: 51,\n    //     a: 1,\n    //   },\n    //   hsl: {\n    //     h: 0,\n    //     s: 0,\n    //     l: .20,\n    //     a: 1,\n    //   },\n    // }\n  }\n\n  render() {\n    return <ColorPicker onChange={ this.handleChange } />;\n  }\n}\n```\n";
 
 /***/ }),
 /* 87 */
 /***/ (function(module, exports) {
 
-	module.exports = "---\nid: create-helpers\ntitle: Helper Components\n---\nEvery color picker provided is made up of a collection of helper components. Those components are accessible for you to use to make a custom color picker.\n\n### <Alpha />\nUse Alpha to display a slider to toggle the alpha value. Make sure to wrap it in a div that's the size you want the slider to be and that it is `position: relative`.\n\n* **...this.props** - Pass down all the color props from your top-most component.\n* **pointer** - Define a custom pointer component for the slider pointer.\n* **onChange** - Function callback. Make sure this calls the onChange function of the parent to make it change.\n```\nvar { Alpha } = require('react-color/src/components/common');\n\n<Alpha\n  {...this.props}\n  pointer={ CustomPointer }\n  onChange={ this.handleChange } />\n```\n\n\n### <EditableInput />\nUse EditableInput to display an input / label that acts as the single source of truth until the input is blurred.  \n\n* **label** - Used to put a label on the input.\n* **value** - The value to be passed down to the input.\n* **onChange** - Function callback. Use this to call the onChange function of the parent. Returns an object where the key is the label and the value is the new value.\n* **style** - Inline css to style the children elements: `{ wrap: {}, input: {}, label: {} }`\n\n```\nvar { EditableInput } = require('react-color/src/components/common');\n\nvar inputStyles = {\n  input: {\n    border: none,\n  },\n  label: {\n    fontSize: '12px',\n    color: '#999',\n  },\n};\n\n<EditableInput\n  style={ inputStyles }\n  label=\"hex\"\n  value={ this.props.hex }\n  onChange={ this.handleChange } />\n```\n\n### <Hue />\nUse Hue to display a slider to toggle the hue value. Make sure to wrap it in a div that's the size you want the slider to be and that it is `position: relative`.\n\n* **...this.props** - Pass down all the color props from your top-most component.\n* **pointer** - Define a custom pointer component for the slider pointer.\n* **onChange** - Function callback. Make sure this calls the onChange function of the parent to make it change.\n* **direction** - Display direction of the slider. Horizontal by default.\n```\nvar { Alpha } = require('react-color/src/components/common');\n\n<Hue\n  {...this.props}\n  pointer={ CustomPointer }\n  onChange={ this.handleChange }\n  direction={ 'horizontal' || 'vertical' } />\n```\n\n### <Saturation />\nUse Saturation to display a saturation block that users can drag to change the value. Make sure to wrap it in a div that's the size you want the block to be and that it is `position: relative`.\n\n* **...this.props** - Pass down all the color props from your top-most component.\n* **pointer** - Define a custom pointer component for the slider pointer.\n* **onChange** - Function callback. Make sure this calls the onChange function of the parent to make it change.\n```\nvar { Alpha } = require('react-color/src/components/common');\n\n<Saturation\n  {...this.props}\n  pointer={ CustomPointer }\n  onChange={ this.handleChange }  />\n```\n";
+	module.exports = "---\nid: api-onChangeComplete\ntitle: onChangeComplete\n---\nPass a function to call once a color change is complete.\n\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  constructor() {\n    super();\n    this.state = {\n      background: '#fff',\n    };\n    this.handleChangeComplete = this.handleChangeComplete.bind(this);\n  }\n\n  handleChangeComplete(color) {\n    this.setState({ background: color.hex });\n  }\n\n  render() {\n    return <ColorPicker onChangeComplete={ this.handleChangeComplete } />;\n  }\n}\n```\n";
 
 /***/ }),
 /* 88 */
 /***/ (function(module, exports) {
 
-	module.exports = "---\nid: examples\ntitle: More Examples\n---\n";
+	module.exports = "---\nid: api-color\ntitle: color\n---\nColor controls what color is active on the color picker. You can use this to initialize the color picker with a particular color, or to keep it in sync with the state of a parent component.\n\nColor accepts either a string of a hex color `'#333'` or a object of rgb or hsl values `{ r: 51, g: 51, b: 51 }` or `{ h: 0, s: 0, l: .10 }`. Both rgb and hsl will also take a `a: 1` value for alpha.\n\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  constructor() {\n    super();\n    this.state = {\n      background: '#fff',\n    };\n    this.handleChangeComplete = this.handleChangeComplete.bind(this);\n  }\n\n  handleChangeComplete(color) {\n    this.setState({ background: color.hex });\n  }\n\n  render() {\n    return <ColorPicker color={ this.state.background } type=\"sketch\" onChangeComplete={ this.handleChangeComplete } />;\n  }\n}\n```\nIn this case, the color picker will initialize with the color `#fff`. When the color is changed, `handleChangeComplete` will fire and set the new color to state.\n";
 
 /***/ }),
 /* 89 */
+/***/ (function(module, exports) {
+
+	module.exports = "---\nid: api-display\ntitle: display\n---\nBy default, the color picker is a block element that is always visible. To display the popup programmatically, pass `display` a boolean value:\n\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  constructor() {\n    super();\n    this.state = {\n      displayColorPicker: false,\n    };\n    this.handleClick = this.handleClick.bind(this);\n  }\n\n  handleClick() {\n    this.setState({ displayColorPicker: !this.state.displayColorPicker });\n  }\n\n  render() {\n    return (\n      <div>\n        <button onClick={ this.handleClick }>Pick Color</button>\n        <ColorPicker display={ this.state.displayColorPicker } type=\"sketch\" />\n      </div>\n    );\n  }\n}\n```\n";
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports) {
+
+	module.exports = "---\nid: api-onClose\ntitle: onClose\n---\nIf you are using the ColorPicker as a popup, you can pass a function to `onClose` that will fire when the popup is closed. The callback gets called with the latest color information as the first argument.\n\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  handleClose(color) {\n    ...\n  }\n\n  render() {\n    return <ColorPicker display={ true } onClose={ this.handleClose } />;\n  }\n}\n```\n";
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports) {
+
+	module.exports = "---\nid: api-position\ntitle: position\n---\nUse `position` alongside `display` to position the popup relative to the container. It takes `left` `right` and `below` as options.\n\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  render() {\n    return <ColorPicker position=\"below\" display={ true } />;\n  }\n}\n```\n";
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports) {
+
+	module.exports = "---\nid: api-positionCSS\ntitle: positionCSS\n---\nUse `positionCSS` alongside `display` to declare a custom position for the color picker with a CSS object:\n\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass Component extends React.Component {\n\n  render() {\n    var popupPosition = {\n      position: 'absolute',\n      top: '100px',\n      left: '20px',\n    };\n    return <ColorPicker positionCSS={ popupPosition } display={ true } />;\n  }\n}\n```\n";
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports) {
+
+	module.exports = "---\nid: create\ntitle: Create Your Own\n---\n";
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports) {
+
+	module.exports = "---\nid: create-parent\ntitle: Parent Component\n---\nTo make a custom color picker, create a top-level component that will act as the bridge with the ColorPicker component. Pass that component down on the custom property:\n\n```\nvar React = require('react');\nvar ColorPicker = require('react-color');\nvar CustomColorPicker = require('./CustomColorPicker');\n\nclass Component extends React.Component {\n  render() {\n    return <ColorPicker custom={ CustomColorPicker } />;\n  }\n}\n```\n\nThis component will be passed `hex`, `rgb` and `hsl` values as props for the current color. It is also provided an `onChange` prop that should be called to propagate a new color. Pass it a hex string, or an rgb or hsl object.\n";
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports) {
+
+	module.exports = "---\nid: create-helpers\ntitle: Helper Components\n---\nEvery color picker provided is made up of a collection of helper components. Those components are accessible for you to use to make a custom color picker.\n\n### <Alpha />\nUse Alpha to display a slider to toggle the alpha value. Make sure to wrap it in a div that's the size you want the slider to be and that it is `position: relative`.\n\n* **...this.props** - Pass down all the color props from your top-most component.\n* **pointer** - Define a custom pointer component for the slider pointer.\n* **onChange** - Function callback. Make sure this calls the onChange function of the parent to make it change.\n```\nvar { Alpha } = require('react-color/src/components/common');\n\n<Alpha\n  {...this.props}\n  pointer={ CustomPointer }\n  onChange={ this.handleChange } />\n```\n\n\n### <EditableInput />\nUse EditableInput to display an input / label that acts as the single source of truth until the input is blurred.  \n\n* **label** - Used to put a label on the input.\n* **value** - The value to be passed down to the input.\n* **onChange** - Function callback. Use this to call the onChange function of the parent. Returns an object where the key is the label and the value is the new value.\n* **style** - Inline css to style the children elements: `{ wrap: {}, input: {}, label: {} }`\n\n```\nvar { EditableInput } = require('react-color/src/components/common');\n\nvar inputStyles = {\n  input: {\n    border: none,\n  },\n  label: {\n    fontSize: '12px',\n    color: '#999',\n  },\n};\n\n<EditableInput\n  style={ inputStyles }\n  label=\"hex\"\n  value={ this.props.hex }\n  onChange={ this.handleChange } />\n```\n\n### <Hue />\nUse Hue to display a slider to toggle the hue value. Make sure to wrap it in a div that's the size you want the slider to be and that it is `position: relative`.\n\n* **...this.props** - Pass down all the color props from your top-most component.\n* **pointer** - Define a custom pointer component for the slider pointer.\n* **onChange** - Function callback. Make sure this calls the onChange function of the parent to make it change.\n* **direction** - Display direction of the slider. Horizontal by default.\n```\nvar { Alpha } = require('react-color/src/components/common');\n\n<Hue\n  {...this.props}\n  pointer={ CustomPointer }\n  onChange={ this.handleChange }\n  direction={ 'horizontal' || 'vertical' } />\n```\n\n### <Saturation />\nUse Saturation to display a saturation block that users can drag to change the value. Make sure to wrap it in a div that's the size you want the block to be and that it is `position: relative`.\n\n* **...this.props** - Pass down all the color props from your top-most component.\n* **pointer** - Define a custom pointer component for the slider pointer.\n* **onChange** - Function callback. Make sure this calls the onChange function of the parent to make it change.\n```\nvar { Alpha } = require('react-color/src/components/common');\n\n<Saturation\n  {...this.props}\n  pointer={ CustomPointer }\n  onChange={ this.handleChange }  />\n```\n";
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports) {
+
+	module.exports = "---\nid: examples\ntitle: More Examples\n---\n";
+
+/***/ }),
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = {
-	  Button: __webpack_require__(90),
-	  buttonmd: __webpack_require__(91),
-	  Sketch: __webpack_require__(92),
-	  sketchmd: __webpack_require__(93)
+	  Button: __webpack_require__(98),
+	  buttonmd: __webpack_require__(99),
+	  Sketch: __webpack_require__(100),
+	  sketchmd: __webpack_require__(101)
 	};
 
 /***/ }),
-/* 90 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25238,13 +26013,13 @@
 	})(React.Component);
 
 /***/ }),
-/* 91 */
+/* 99 */
 /***/ (function(module, exports) {
 
 	module.exports = "```\nvar React = require('react');\nvar ColorPicker = require('react-color');\n\nclass ButtonExample extends React.Component {\n\n  constructor() {\n    super();\n    this.state = {\n      displayColorPicker: false,\n    };\n    this.handleClick = this.handleClick.bind(this);\n    this.handleClose = this.handleClose.bind(this);\n  }\n\n  handleClick() {\n    this.setState({ displayColorPicker: !this.state.displayColorPicker });\n  }\n\n  handleClose() {\n    this.setState({ displayColorPicker: false });\n  }\n\n  render() {\n    return (\n      <div>\n        <button onClick={ this.handleClick }>Pick Color</button>\n        <ColorPicker\n          display={ this.state.displayColorPicker }\n          onClose={ this.handleClose }\n          type=\"chrome\" />\n      </div>\n    );\n  }\n};\n```\n";
 
 /***/ }),
-/* 92 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25334,7 +26109,7 @@
 	})(ReactCSS.Component);
 
 /***/ }),
-/* 93 */
+/* 101 */
 /***/ (function(module, exports) {
 
 	module.exports = "```\nvar React = require('react');\nvar ReactCSS = require('reactcss');\nvar ColorPicker = require('react-color');\n\nclass SketchExample extends ReactCSS.Component {\n\n  constructor() {\n    super();\n    this.state = {\n      displayColorPicker: false,\n      color: '#F17013',\n    };\n    this.handleClick = this.handleClick.bind(this);\n    this.handleClose = this.handleClose.bind(this);\n    this.handleChange = this.handleChange.bind(this);\n  }\n\n  classes() {\n    return {\n      'default': {\n        color: {\n          width: '36px',\n          height: '14px',\n          borderRadius: '2px',\n          background: this.state.color,\n        },\n        swatch: {\n          padding: '5px',\n          background: '#fff',\n          borderRadius: '1px',\n          boxShadow: '0 0 0 1px rgba(0,0,0,.1)',\n          display: 'inline-block',\n          cursor: 'pointer',\n        },\n      },\n    };\n  }\n\n  handleClick() {\n    this.setState({ displayColorPicker: !this.state.displayColorPicker });\n  }\n\n  handleClose() {\n    this.setState({ displayColorPicker: false });\n  }\n\n  handleChange(color) {\n    this.setState({ color: '#' + color.hex });\n  }\n\n  render() {\n    return (\n      <div>\n        <div is=\"swatch\" onClick={ this.handleClick }>\n          <div is=\"color\" />\n        </div>\n        <ColorPicker\n          color={ this.state.color }\n          position=\"below\"\n          display={ this.state.displayColorPicker }\n          onChange={ this.handleChange }\n          onClose={ this.handleClose }\n          type=\"sketch\" />\n      </div>\n    );\n  }\n};\n```\n";
