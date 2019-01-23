@@ -9,10 +9,7 @@ var color = require('../helpers/color');
 var Photoshop = require('./photoshop/Photoshop');
 var Sketch = require('./sketch-2/Sketch');
 var Chrome = require('./chrome/Chrome');
-var Swatches = require('./swatches/Swatches');
 var Slider = require('./slider/Slider');
-var Material = require('./material/Material');
-var Compact = require('./compact/Compact');
 
 class ColorPicker extends ReactCSS.Component {
 
@@ -148,14 +145,8 @@ class ColorPicker extends ReactCSS.Component {
       Picker = Photoshop;
     } else if (this.props.type === 'chrome') {
       Picker = Chrome;
-    } else if (this.props.type === 'swatches') {
-      Picker = Swatches;
     } else if (this.props.type === 'slider') {
       Picker = Slider;
-    } else if (this.props.type === 'material') {
-      Picker = Material;
-    } else if (this.props.type === 'compact') {
-      Picker = Compact;
     }
 
     return (
