@@ -15094,7 +15094,7 @@
 	    key: 'handleChange',
 	    value: function handleChange(e, skip) {
 	      !skip && e.preventDefault();
-	      var container = React.findDOMNode(this.refs.container);
+	      var container = this.refs.container;
 	      var containerWidth = container.clientWidth;
 	      var left = (e.pageX || e.touches[0].pageX) - (container.getBoundingClientRect().left + window.pageXOffset);
 
@@ -15305,7 +15305,7 @@
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
-	      var input = React.findDOMNode(this.refs.input);
+	      var input = this.refs.input;
 	      if (nextProps.value !== this.state.value) {
 	        if (input === document.activeElement) {
 	          this.setState({ blurValue: String(nextProps.value).toUpperCase() });
@@ -15497,7 +15497,7 @@
 	    key: 'handleChange',
 	    value: function handleChange(e, skip) {
 	      !skip && e.preventDefault();
-	      var container = React.findDOMNode(this.refs.container);
+	      var container = this.refs.container;
 	      var containerWidth = container.clientWidth;
 	      var containerHeight = container.clientHeight;
 	      var left = (e.pageX || e.touches[0].pageX) - (container.getBoundingClientRect().left + window.pageXOffset);
@@ -15650,7 +15650,7 @@
 	    key: 'handleChange',
 	    value: function handleChange(e, skip) {
 	      !skip && e.preventDefault();
-	      var container = React.findDOMNode(this.refs.container);
+	      var container = this.refs.container;
 	      var containerWidth = container.clientWidth;
 	      var containerHeight = container.clientHeight;
 	      var left = (e.pageX || e.touches[0].pageX) - (container.getBoundingClientRect().left + window.pageXOffset);
@@ -16800,12 +16800,12 @@
 	  }, {
 	    key: 'showHighlight',
 	    value: function showHighlight() {
-	      React.findDOMNode(this.refs.iconHighlight).style.display = 'block';
+	      this.refs.iconHighlight.style.display = 'block';
 	    }
 	  }, {
 	    key: 'hideHighlight',
 	    value: function hideHighlight() {
-	      React.findDOMNode(this.refs.iconHighlight).style.display = 'none';
+	      this.refs.iconHighlight.style.display = 'none';
 	    }
 	  }, {
 	    key: 'render',
